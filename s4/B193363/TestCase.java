@@ -41,6 +41,40 @@ public class TestCase {
 	    freq = myObject.frequency();
 	    System.out.print("\"H\" in \"Hi Ho Hi Ho\" appears "+freq+" times. ");
 	    if(4 == freq) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+	    
+	    FrequencerInterface  myObject2;
+	    myObject2 = new s4.B193363.Frequencer();
+	    myObject2.setSpace("Hi Ho Hi Ho".getBytes());
+	    freq = myObject2.frequency();
+	    System.out.print("null in \"Hi Ho Hi Ho\" appears "+freq+" times. ");
+	    if(-1 == freq) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+	    
+	    
+	    FrequencerInterface  myObject3;
+	    myObject3 = new s4.B193363.Frequencer();
+	    myObject3.setSpace("Hi Ho Hi Ho".getBytes());
+	    myObject3.setTarget("".getBytes());
+	    freq = myObject3.frequency();
+	    System.out.print("\"\" in \"Hi Ho Hi Ho\" appears "+freq+" times. ");
+	    if(-1 == freq) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+	    
+	    
+	    FrequencerInterface  myObject4;
+	    myObject4 = new s4.B193363.Frequencer();
+	    myObject4.setTarget("H".getBytes());
+	    freq = myObject4.frequency();
+	    System.out.print("\"H\" in null appears "+freq+" times. ");
+	    if(0 == freq) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+	    
+	    
+	    FrequencerInterface  myObject5;
+	    myObject5 = new s4.B193363.Frequencer();
+	    myObject5.setSpace("".getBytes());
+	    myObject5.setTarget("H".getBytes());
+	    freq = myObject5.frequency();
+	    System.out.print("\"H\" in \"\" appears "+freq+" times. ");
+	    if(0 == freq) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+	    
 	}
 	catch(Exception e) {
 	    System.out.println("Exception occurred: STOP");
