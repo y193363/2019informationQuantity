@@ -127,9 +127,61 @@ public class TestCase {
 	    myObject.setTarget("00".getBytes());
 	    value = myObject.estimation();
 	    System.out.println(">00 "+value);
-	    myObject.setTarget("3210321001230123".getBytes());
+	}
+	catch(Exception e) {
+	    System.out.println("Exception occurred: STOP");
+	}
+
+	//not set target
+	try {
+	    InformationEstimatorInterface myObject;
+	    double value;
+	    myObject = new s4.B193363.InformationEstimator();
+	    myObject.setSpace("3210321001230123".getBytes());
 	    value = myObject.estimation();
-	    System.out.println(">3210321001230123 "+value);
+	    System.out.println(">0 "+value);
+	    
+	}
+	catch(Exception e) {
+	    System.out.println("Exception occurred: STOP");
+	}
+
+	//0 length set target
+        try {
+	    InformationEstimatorInterface myObject;
+	    double value;
+	    myObject = new s4.B193363.InformationEstimator();
+	    myObject.setSpace("3210321001230123".getBytes());
+	    myObject.setTarget("".getBytes());
+	    value = myObject.estimation();
+	    System.out.println(">0 "+value);	    
+	}
+	catch(Exception e) {
+	    System.out.println("Exception occurred: STOP");
+	}
+
+	//not set space
+        try {
+	    InformationEstimatorInterface myObject;
+	    double value;
+	    myObject = new s4.B193363.InformationEstimator();
+	    myObject.setTarget("0".getBytes());
+	    value = myObject.estimation();
+	    System.out.println(">0 "+value);	    
+	}
+	catch(Exception e) {
+	    System.out.println("Exception occurred: STOP");
+	}
+
+	//0 length set space
+        try {
+	    InformationEstimatorInterface myObject;
+	    double value;
+	    myObject = new s4.B193363.InformationEstimator();
+	    myObject.setSpace("".getBytes());
+	    myObject.setTarget("0".getBytes());
+	    value = myObject.estimation();
+	    System.out.println(">0 "+value);	    
 	}
 	catch(Exception e) {
 	    System.out.println("Exception occurred: STOP");
