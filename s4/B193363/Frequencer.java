@@ -203,16 +203,7 @@ public class Frequencer implements FrequencerInterface{
         for(int i = 0; i < suffixArray.length; i++){
             if (targetCompare(suffixArray[i], start, end-1) == 0) return suffixArray[i];
         }
-        /*for(int i = start; i < end; i++){
-            int j = 0;
-            if(mySpace[i] == myTarget[j]){
-                while(mySpace[i] == myTarget[j] && i != end){
-                    if(j == myTarget.length -1) return (i - myTarget.length +1);
-                    i++;
-                    j++;
-                }
-            }
-        }*/                                                                         
+	
         return suffixArray.length; //このコードは変更しなければならない。          
     }
 
@@ -243,16 +234,7 @@ public class Frequencer implements FrequencerInterface{
         for(int i = 0; i < suffixArray.length; i++){
             if (targetCompare(suffixArray[i], start, end-1) == 1) return suffixArray[i];
         }
-        /*for(int i = start; i < end; i++){
-            int j = 0;
-            if(mySpace[i] == myTarget[j]){
-                while(mySpace[i] == myTarget[j] && i != end){
-                    if(j == myTarget.length -1) return (i - myTarget.length +1);
-                    i++;
-                    j++;
-                }
-            }
-        }*/                                                                         
+	
         return suffixArray.length; //このコードは変更しなければならない。
     }
 
@@ -290,8 +272,8 @@ public class Frequencer implements FrequencerInterface{
             frequencerObject.setTarget("Hi Ho Hi Ho".getBytes());
             //                                         
             // ****  Please write code to check subByteStartIndex, and subByteEndIndex
-            System.out.println(frequencerObject.subByteStartIndex(0,5));
-            System.out.println(frequencerObject.subByteEndIndex(0,5));
+            System.out.println("start:" + frequencerObject.subByteStartIndex(0,5));
+            System.out.println("end:" + frequencerObject.subByteEndIndex(0,5));
             //
 
             int result = frequencerObject.frequency();
