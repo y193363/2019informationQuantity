@@ -39,7 +39,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	myFrequencer = new Frequencer();
 	mySpace = space; myFrequencer.setSpace(space); 
     }
-
+    /*
     public double estimation(){
 	boolean [] partition = new boolean[myTarget.length+1];
 	int np;
@@ -81,6 +81,57 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	    if(value1 < value) value = value1;
 	}
 	return value;
+	}*/
+    /*
+    public double saiki(int start, int end){
+	if((end - start) == 0) return 0.0;
+	else if((end - start) == 1){
+	    myFrequencer.setTarget(subBytes(myTarget, start, end));
+	    return iq(myFrequencer.frequency());
+	}
+
+	double min = Double.MAX_VALUE;
+	for(int i = 0; i < end; i++){
+	    myFrequencer.setTarget(subBytes(myTarget, start + i, end));
+	    double value = saiki(start, i) + iq(myFrequencer.frequency());
+	    System.out.print(value);
+	    System.out.print(" " +iq(myFrequencer.frequency()));
+	      System.out.println(" " +end);
+	    if(min > value){
+		min = value;
+	    }
+	}
+	return min;
+    }
+    */
+    
+    public double saiki(int start, int end){
+	if((end - start) == 0) return 0.0;
+	else if((end - start) == 1){
+	    myFrequencer.setTarget(subBytes(myTarget, start, end));
+	    return iq(myFrequencer.frequency());
+	}
+
+	double min = Double.MAX_VALUE;
+	for(int i = 0; i < end; i++){
+	    //System.out.println(""+ start + " " + i);
+	    //System.out.println(myTarget);
+	    myFrequencer.setTarget(subBytes(myTarget, start + i, end));
+	    double value = saiki(start, i) + iq(myFrequencer.frequency());
+	    //System.out.print(value);
+	    //System.out.print(" " +iq(myFrequencer.frequency()));
+	    //System.out.println(" " +end);
+	    //myFrequencer.setTarget(subBytes(myTarget, 1, 4));
+	    //System.out.println("***" +iq(myFrequencer.frequency()));
+	    if(min > value){
+		min = value;
+	    }
+	}
+	return min;
+    }
+    
+    public double estimation(){
+        return saiki(0, myTarget.length);
     }
 
     public static void main(String[] args) {
@@ -91,12 +142,12 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	myObject.setTarget("0".getBytes());
 	value = myObject.estimation();
 	System.out.println(">0 "+value);
-	myObject.setTarget("01".getBytes());
-	value = myObject.estimation();
-	System.out.println(">01 "+value);
 	myObject.setTarget("0123".getBytes());
 	value = myObject.estimation();
 	System.out.println(">0123 "+value);
+	myObject.setTarget("123".getBytes());
+	value = myObject.estimation();
+	System.out.println(">123 "+value);
 	myObject.setTarget("00".getBytes());
 	value = myObject.estimation();
 	System.out.println(">00 "+value);
