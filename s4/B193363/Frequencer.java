@@ -2,6 +2,8 @@ package s4.B193363;
 import java.lang.*;
 import s4.specification.*;
 
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /*package s4.specification;
   ここは、１回、２回と変更のない外部仕様である。
@@ -9,6 +11,23 @@ import s4.specification.*;
   void setTarget(byte  target[]); // set the data to search.
   void setSpace(byte  space[]);  // set the data to be searched target from.
   int frequency(); //It return -1, when TARGET is not set or TARGET's length is zero
+	    myObject = new Frequencer();
+	    myObject.setSpace("AAA".getBytes());
+	    if(-1 != freq) { System.out.println("frequency() for AAA should return -1, when target is  not set. But it returns  "+freq); c++; }	
+	    myObject = new Frequencer();
+	    myObject.setSpace("AAA".getBytes());
+	    myObject.setTarget("".getBytes());
+	    freq = myObject.frequency();
+	    if(-1 != freq) { System.out.println("frequency() for AAA should return -1, when taget empty string. But it returns "+freq); c++; }
+	    myObject = new Frequencer();
+	    myObject.setTarget("A".getBytes());
+	    freq = myObject.frequency();	   
+ 	    if(0 != freq) { System.out.println("frequency() for not set, should return 0, when taget is not empty. But it returns "+freq); c++; }
+	    myObject = new Frequencer();
+	    myObject.setSpace("".getBytes());
+	    myObject.setTarget("A".getBytes());
+	    freq = myObject.frequency();	   
+ 	    if(0 != freq) { System.out.println("frequency() for empty space, should r
   //Otherwise, it return 0, when SPACE is not set or SPACE's length is zero
   //Otherwise, get the frequency of TAGET in SPACE
   int subByteFrequency(int start, int end);
@@ -132,8 +151,15 @@ public class Frequencer implements FrequencerInterface{
             if(abort == false) { count++; }
            }
         */
+	/*
+	System.out.println("-------------------------");
+        for(int i = 0; i < suffixArray.length; i++){
+	    System.out.println(targetCompare(suffixArray[i], start, end));
+	}
+	*/
         int first = subByteStartIndex(start, end);
         int last1 = subByteEndIndex(start, end);
+	//System.out.println(first +" "+ last1);
         return last1 - first;
     }
     // 変更してはいけないコードはここまで。
@@ -163,16 +189,43 @@ public class Frequencer implements FrequencerInterface{
         //
         // ここに比較のコードを書け 
         //
+	byte[] suffix_i = Arrays.copyOfRange(mySpace, i, mySpace.length);
+	byte[] target_i_k = Arrays.copyOfRange(myTarget, j, k);
+
+	String string_suffix_i = new String(suffix_i, StandardCharsets.UTF_8).substring(0, Math.min(suffix_i.length, target_i_k.length));
+	String string_target_i_k = new String(target_i_k, StandardCharsets.UTF_8);
+
+	int result = string_suffix_i.compareTo(string_target_i_k);
+	if(result == 0) return 0;
+	else if(result < 0) return -1;
+	else return 1;
+	/* 
         while(i < mySpace.length && j < k){
             if(mySpace[i] > myTarget[j]) return 1;
             else if(mySpace[i] < myTarget[j]) return -1;
             i++;
             j++;
-	    }
+	}
         if(mySpace.length - i < j - k + 1) return 1;
         else if(mySpace.length - i > j - k + 1) return -1;
 
         return 0;
+	*/
+    }
+
+    private int binarySearch(int target, int start, int end){
+	int left = 0;
+	int right = suffixArray.length;
+
+	while(left < right) {
+	    int middle = (left + right)/2;
+	    if(targetCompare(suffixArray[middle], start, end) == target){
+		return middle;
+	    }
+	    else if(targetCompare(suffixArray[middle], start, end) > target) right = middle-1;
+	    else left = middle + 1;
+	}
+	return -1;
     }
     
     private int subByteStartIndex(int start, int end) {
@@ -200,11 +253,20 @@ public class Frequencer implements FrequencerInterface{
         // if target_start_end is "Ho ", it will return 6.                
         //                                                                          
         // ここにコードを記述せよ。
+	/*
         for(int i = 0; i < suffixArray.length; i++){
-            if (targetCompare(suffixArray[i], start, end-1) == 0) return suffixArray[i];
+            if (targetCompare(suffixArray[i], start, end) == 0) return i; //0ga nakute 1 sikanaitoki yabai
         }
+	*/
+   
+	int position = binarySearch(0, start, end);
+	if(position == -1) return suffixArray.length;
+	while(position > 0){
+	    if(targetCompare(suffixArray[position - 1], start, end) == -1) return position;
+	    position--;
+	}
 	
-        return suffixArray.length; //このコードは変更しなければならない。          
+        return 0; //このコードは変更しなければならない。          
     }
 
     private int subByteEndIndex(int start, int end) {
@@ -231,9 +293,17 @@ public class Frequencer implements FrequencerInterface{
         // if target_start_end is"i", it will return 9 for "Hi Ho Hi Ho".    
         //                                                                   
         //　ここにコードを記述せよ
+	/*
         for(int i = 0; i < suffixArray.length; i++){
-            if (targetCompare(suffixArray[i], start, end-1) == 1) return suffixArray[i];
+            if (targetCompare(suffixArray[i], start, end) == 1) return i;
         }
+	*/
+	int position = binarySearch(0, start, end);
+	if(position == -1) return suffixArray.length;
+	while(position < suffixArray.length - 1){
+	    if(targetCompare(suffixArray[position + 1], start, end) == 1) return position + 1;
+	    position++;
+	}
 	
         return suffixArray.length; //このコードは変更しなければならない。
     }

@@ -19,6 +19,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
     // Code to tet, *warning: This code condtains intentional problem*
     byte [] myTarget; // data to compute its information quantity
     byte [] mySpace;  // Sample space to compute the probability
+    double [] memory;
     FrequencerInterface myFrequencer;  // Object for counting frequency
 
     byte [] subBytes(byte [] x, int start, int end) {
@@ -30,9 +31,11 @@ public class InformationEstimator implements InformationEstimatorInterface{
     }
 
     // IQ: information quantity for a count,  -log2(count/sizeof(space))
+    /*
     double iq(int freq) {
 	return  - Math.log10((double) freq / (double) mySpace.length)/ Math.log10((double) 2.0);
     }
+    */
 
     public void setTarget(byte [] target) { myTarget = target;}
     public void setSpace(byte []space) { 
@@ -104,20 +107,24 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	return min;
     }
     */
-    
-    public double saiki(int start, int end){
-	if((end - start) == 0) return 0.0;
-	else if((end - start) == 1){
-	    myFrequencer.setTarget(subBytes(myTarget, start, end));
-	    return iq(myFrequencer.frequency());
-	}
 
-	double min = Double.MAX_VALUE;
-	for(int i = 0; i < end; i++){
+    double f(byte [] string) {
+	myFrequencer.setTarget(string);
+	int freq = myFrequencer.frequency();
+	//System.out.println(freq);
+	return  - Math.log10((double) freq / (double) mySpace.length)/ Math.log10((double) 2.0);
+    }
+    
+    public double saiki(int length){
+	if(memory[length - 1] != -1.0) {
+	    return memory[length - 1];
+	}
+	
+	double min = f(subBytes(myTarget, 0, length));
+	for(int i = 1; i < length; i++){
 	    //System.out.println(""+ start + " " + i);
 	    //System.out.println(myTarget);
-	    myFrequencer.setTarget(subBytes(myTarget, start + i, end));
-	    double value = saiki(start, i) + iq(myFrequencer.frequency());
+	    double value = saiki(i) + f(subBytes(myTarget, i, length));
 	    //System.out.print(value);
 	    //System.out.print(" " +iq(myFrequencer.frequency()));
 	    //System.out.println(" " +end);
@@ -127,11 +134,17 @@ public class InformationEstimator implements InformationEstimatorInterface{
 		min = value;
 	    }
 	}
+	memory[length - 1] = min;
 	return min;
     }
     
     public double estimation(){
-        return saiki(0, myTarget.length);
+	memory = new double[myTarget.length];
+	for(int i = 0; i < myTarget.length; i++) {
+	    memory[i] = -1.0;
+	}
+	
+        return saiki(myTarget.length);
     }
 
     public static void main(String[] args) {
@@ -142,12 +155,12 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	myObject.setTarget("0".getBytes());
 	value = myObject.estimation();
 	System.out.println(">0 "+value);
+	myObject.setTarget("01".getBytes());
+	value = myObject.estimation();
+	System.out.println(">01 "+value);
 	myObject.setTarget("0123".getBytes());
 	value = myObject.estimation();
 	System.out.println(">0123 "+value);
-	myObject.setTarget("123".getBytes());
-	value = myObject.estimation();
-	System.out.println(">123 "+value);
 	myObject.setTarget("00".getBytes());
 	value = myObject.estimation();
 	System.out.println(">00 "+value);
