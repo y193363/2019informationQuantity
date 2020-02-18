@@ -213,7 +213,7 @@ public class Frequencer implements FrequencerInterface{
         return 0;
 	*/
     }
-
+    /*
     private int binarySearch(int target, int start, int end){
 	int left = 0;
 	int right = suffixArray.length;
@@ -228,7 +228,7 @@ public class Frequencer implements FrequencerInterface{
 	}
 	return -1;
     }
-    
+    */
     private int subByteStartIndex(int start, int end) {
         //suffix arrayのなかで、目的の文字列の出現が始まる位置を求めるメソッド
         // 以下のように定義せよ。
@@ -259,17 +259,35 @@ public class Frequencer implements FrequencerInterface{
             if (targetCompare(suffixArray[i], start, end) == 0) return i; //0ga nakute 1 sikanaitoki yabai
         }
 	*/
-
+	/*
   	int position = binarySearch(0, start, end);
 	if(position == -1) return suffixArray.length;
 	while(position > 0){
 	    if(targetCompare(suffixArray[position - 1], start, end) == -1) return position;
 	    position--;
 	}
-	
-	    
-	
-        return 0; //このコードは変更しなければならない。          
+	*/
+	int left = 0;
+	int right = suffixArray.length;
+
+	while(left < right) {
+	    int middle = (left + right)/2;
+	    int tc = targetCompare(suffixArray[middle], start, end);
+	    if(tc == 0){
+		if(middle == 0 || targetCompare(suffixArray[middle - 1], start, end) == -1){
+		    return middle;
+		}
+	        right = middle;
+	    }
+	    else if(tc == 1){
+		right = middle;
+	    }
+	    else{
+		left = middle + 1;
+	    }
+	}
+	return suffixArray.length;
+	          
     }
 
     private int subByteEndIndex(int start, int end) {
@@ -301,6 +319,7 @@ public class Frequencer implements FrequencerInterface{
             if (targetCompare(suffixArray[i], start, end) == 1) return i;
         }
 	*/
+	/*
 	int position = binarySearch(0, start, end);
 	if(position == -1) return suffixArray.length;
 	while(position < suffixArray.length - 1){
@@ -309,6 +328,27 @@ public class Frequencer implements FrequencerInterface{
 	}
 	
         return suffixArray.length; //このコードは変更しなければならない。
+	*/
+	int left = 0;
+	int right = suffixArray.length;
+
+	while(left < right) {
+	    int middle = (left + right)/2;
+	    int tc = targetCompare(suffixArray[middle], start, end);
+	    if(tc == 0){
+		if(middle == suffixArray.length - 1 || targetCompare(suffixArray[middle + 1], start, end) == 1){
+		    return middle + 1;
+		}
+	        left = middle + 1;
+	    }
+	    else if(tc == 1){
+		right = middle;
+	    }
+	    else{
+		left = middle + 1;
+	    }
+	}
+	return suffixArray.length;
     }
 
 
