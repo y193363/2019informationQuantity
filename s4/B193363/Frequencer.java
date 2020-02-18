@@ -157,6 +157,7 @@ public class Frequencer implements FrequencerInterface{
 	    System.out.println(targetCompare(suffixArray[i], start, end));
 	}
 	*/
+	//printSuffixArray();
         int first = subByteStartIndex(start, end);
         int last1 = subByteEndIndex(start, end);
 	//System.out.println(first +" "+ last1);
@@ -222,7 +223,7 @@ public class Frequencer implements FrequencerInterface{
 	    if(targetCompare(suffixArray[middle], start, end) == target){
 		return middle;
 	    }
-	    else if(targetCompare(suffixArray[middle], start, end) > target) right = middle-1;
+	    else if(targetCompare(suffixArray[middle], start, end) > target) right = middle;
 	    else left = middle + 1;
 	}
 	return -1;
@@ -258,13 +259,15 @@ public class Frequencer implements FrequencerInterface{
             if (targetCompare(suffixArray[i], start, end) == 0) return i; //0ga nakute 1 sikanaitoki yabai
         }
 	*/
-   
-	int position = binarySearch(0, start, end);
+
+  	int position = binarySearch(0, start, end);
 	if(position == -1) return suffixArray.length;
 	while(position > 0){
 	    if(targetCompare(suffixArray[position - 1], start, end) == -1) return position;
 	    position--;
 	}
+	
+	    
 	
         return 0; //このコードは変更しなければならない。          
     }
